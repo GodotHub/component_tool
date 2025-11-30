@@ -1,0 +1,118 @@
+[gd_scene load_steps=2 format=3 uid="uid://4bl8oi45rd8j"]
+
+[ext_resource type="Script" uid="uid://eur6ynypmcck" path="res://addons/component_tool/ui/create_component.gd" id="1_7e65w"]
+
+[node name="CreateComponent" type="Window"]
+gui_embed_subwindows = true
+oversampling_override = 1.0
+title = "组件创建向导"
+size = Vector2i(800, 600)
+exclusive = true
+script = ExtResource("1_7e65w")
+
+[node name="Control" type="Panel" parent="."]
+modulate = Color(1, 1, 1, 0.8352941)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer1" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer1"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "组件名"
+
+[node name="ComponetFuncName" type="LineEdit" parent="VBoxContainer/HBoxContainer1"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "驼峰命名，如 Movement"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "组件宿主"
+
+[node name="TypesOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "生成位置预设"
+
+[node name="LocationOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "插件位置"
+popup/item_0/id = 0
+popup/item_1/text = "用户位置"
+popup/item_1/id = 1
+
+[node name="Control" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/Control"]
+layout_mode = 2
+text = "生成预览"
+
+[node name="CodeEdit" type="CodeEdit" parent="VBoxContainer/Control"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="LineEditFile" type="LineEdit" parent="VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ButtonOpenDir" type="Button" parent="VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "浏览"
+
+[node name="ButtonCreate" type="Button" parent="VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "生成"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+oversampling_override = 1.0
+title = "Open a Directory"
+file_mode = 2
+root_subfolder = "res://"
+
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer1/ComponetFuncName" to="." method="_on_componet_func_name_text_changed"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer/TypesOptionButton" to="." method="_on_types_option_button_item_selected"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer2/LocationOptionButton" to="." method="_on_location_option_button_item_selected"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer3/ButtonOpenDir" to="." method="_on_button_open_dir_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer3/ButtonCreate" to="." method="_on_button_create_pressed"]
+[connection signal="confirmed" from="FileDialog" to="." method="_on_file_dialog_confirmed"]

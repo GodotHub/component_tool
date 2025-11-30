@@ -1,8 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://b6a0wvo3dbvi4"]
+[gd_scene load_steps=4 format=3 uid="uid://b6a0wvo3dbvi4"]
 
 [ext_resource type="Script" uid="uid://bqyno1l24evoq" path="res://test_script/main.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://dgl6dkpyq8kyr" path="res://character_body_2d_movement_component.gd" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://dnnt5hy24wqgq" path="res://icon.svg" id="3_h2yge"]
 
 [node name="test" type="Node2D"]
 script = ExtResource("1_ig7tw")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(357, 208)
+
+[node name="CharacterBody2DMovementComponent" type="Node" parent="CharacterBody2D" node_paths=PackedStringArray("component_host")]
+script = ExtResource("2_0xm2m")
+component_host = NodePath("..")
+component_name = "CharacterBody2DMovementComponent"
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
+texture = ExtResource("3_h2yge")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="CharacterBody2D"]
+polygon = PackedVector2Array(59.1, -64, -59, -64, -63.8, -59, -64, 61, -60.3, 64, 59.6, 64, 63.9, 59, 64, -61.1)

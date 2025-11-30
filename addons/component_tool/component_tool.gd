@@ -1,30 +1,36 @@
 @tool
 extends EditorPlugin
 var enabled: bool = false
+var man_ui
+
 
 func _enable_plugin() -> void:
-	# Add autoloads here.
-	add_autoload_singleton("CTM", "res://addons/component_tool/core/component_tool_manager.gd")
-	enabled = true
+	if enabled:
+		return
+	man_ui = preload("res://addons/component_tool/ui/comp_center.tscn").instantiate()
+	add_control_to_dock(DOCK_SLOT_RIGHT_UL, man_ui)
+	
 	pass
 
 
 func _disable_plugin() -> void:
-	# Remove autoloads here.
-	remove_autoload_singleton("CTM")
+	if not enabled:
+		return
+	remove_control_from_docks(man_ui)
+	man_ui.free()
 	enabled = false
 	pass
 
 
 func _enter_tree() -> void:
 	# Initialization of the plugin goes here.
-	if not enabled:
-		_enable_plugin()
+	_enable_plugin()
+	enabled = true
 	pass
 
 
 func _exit_tree() -> void:
 	# Clean-up of the plugin goes here.
-	if enabled:
-		_disable_plugin()
+	_disable_plugin()
+	enabled = false
 	pass

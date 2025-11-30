@@ -6,6 +6,7 @@ var <HostName>: <HostType>
 func _enable():
 	# 获得类型提示
 	<HostName> = component_host
+	component_name = "<HostType><ComponentName>Component"
 	pass
 
 func _disable():

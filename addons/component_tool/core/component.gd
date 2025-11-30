@@ -4,6 +4,7 @@ extends Node
 
 @export var comp_enable: bool = true: set = set_comp_enable
 @export var component_host: Node
+@export var component_name: String 
 	
 @abstract func _enable()
 @abstract func _disable()

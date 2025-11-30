@@ -31,11 +31,61 @@ static func get_object_all_types(obj: Object) -> Array[String]:
 # 获取当前选中的节点 仅返回一个
 static func get_current_selected_node() -> Node:
 	var selected_nodes: Array[Node] =  EditorInterface.get_selection().get_top_selected_nodes()
-	print(selected_nodes)
 	if selected_nodes.size() > 0:
 		return selected_nodes[0]
 	else:
 		return null
+		
+# 获取当前筛选中节点的指定组件节点 如果不存在 返回 null
+static func get_current_selected_node_comp(comp_name: String) -> Component:
+	var current_node: Node = ComponentUtil.get_current_selected_node()
+	if not current_node:
+		push_warning("当前选中节点为空，因此无法找到指定的组件， ", comp_name)
+		return null
+		
+	return find_comp(current_node, comp_name)
+	
+# 激活或者关闭当前选中节点的指定组件
+# 如果状态发生改变则返回true 如果没有发生改变则返回false
+static func set_current_selected_node_comp_enable(comp_name: String, enable: bool) -> bool:
+	var comp: Component = get_current_selected_node_comp(comp_name)
+	if comp and comp.comp_enable != enable:
+		comp.comp_enable = enable
+		return true
+	return false
+
+# 在指定节点上查找组件 找不到返回null
+static func find_comp(node: Node, comp_name: String) -> Component:
+	if not node:
+		return null
+	var comp: Component = node.find_child(comp_name)
+	if not comp:
+		return null
+	return comp
+
+# 列出该节点的所有组件
+static func find_all_comp(node: Node) -> Array[Component]:
+	var ret: Array[Component]  = []
+	if not node:
+		return []
+		
+	var children: Array[Node] = node.find_children("*Component", "", false)
+	for child in children:
+		if child is Component:
+			ret.append(child)
+			
+	return ret
+
+# 激活或关闭指定节点的组件	
+static func set_node_comp_enable(node: Node, comp_name: String, enable: bool) -> bool:
+	var comp: Component = find_comp(node, comp_name)
+	if not comp:
+		return false
+	if comp.comp_enable != enable:
+		comp.comp_enable = enable
+		return true
+	return false	
+		
 
 # 指定一个节点 如果其上有挂载脚本 返回脚本所在文件夹		
 static func get_node_script_path(node: Node) -> String:
@@ -92,3 +142,8 @@ static func add_child_node(parent_node: Node, script_path: String):
 	node.owner = EditorInterface.get_edited_scene_root()
 	node.name = component.get_global_name()
 	pass
+	
+static func save_scene():
+	var current_scene: Node = EditorInterface.get_edited_scene_root()
+	if current_scene != null:
+		EditorInterface.save_scene()

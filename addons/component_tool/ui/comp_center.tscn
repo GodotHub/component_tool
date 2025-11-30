@@ -1,0 +1,118 @@
+[gd_scene load_steps=2 format=3 uid="uid://bguyrpypphexv"]
+
+[ext_resource type="Script" uid="uid://k7x6lpshth88" path="res://addons/component_tool/ui/comp_center.gd" id="1_fh4ya"]
+
+[node name="CompCenter" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fh4ya")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+tabs_visible = false
+
+[node name="Host" type="PanelContainer" parent="TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Host"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Host/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="TabContainer/Host/VBoxContainer/HBoxContainer"]
+modulate = Color(0.2901961, 0.2901961, 0.2901961, 0.8392157)
+layout_mode = 2
+
+[node name="Control" type="Control" parent="TabContainer/Host/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ButtonCreate" type="Button" parent="TabContainer/Host/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_font_sizes/font_size = 26
+text = "创建组件"
+
+[node name="TabContainerHost" type="TabContainer" parent="TabContainer/Host/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+current_tab = 0
+tabs_visible = false
+
+[node name="NoComp" type="PanelContainer" parent="TabContainer/Host/VBoxContainer/TabContainerHost"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="ColorRect" type="ColorRect" parent="TabContainer/Host/VBoxContainer/TabContainerHost/NoComp"]
+layout_mode = 2
+color = Color(0.12941177, 0.14901961, 0.18039216, 1)
+
+[node name="Label" type="Label" parent="TabContainer/Host/VBoxContainer/TabContainerHost/NoComp"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 41
+text = "尚无组件"
+
+[node name="Comp" type="Panel" parent="TabContainer/Host/VBoxContainer/TabContainerHost"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Host/VBoxContainer/TabContainerHost/Comp"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 594.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/Host/VBoxContainer/TabContainerHost/Comp/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TabContainer/Host/VBoxContainer/TabContainerHost/Comp/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "组件列表"
+
+[node name="Control" type="Control" parent="TabContainer/Host/VBoxContainer/TabContainerHost/Comp/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="QueryEdit" type="LineEdit" parent="TabContainer/Host/VBoxContainer/TabContainerHost/Comp/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+placeholder_text = "输入名称过滤插件"
+
+[node name="ItemListComps" type="ScrollContainer" parent="TabContainer/Host/VBoxContainer/TabContainerHost/Comp/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+draw_focus_border = true
+
+[node name="ItemContainer" type="VBoxContainer" parent="TabContainer/Host/VBoxContainer/TabContainerHost/Comp/VBoxContainer/ItemListComps"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Comp" type="PanelContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Label" type="Label" parent="TabContainer/Comp"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "请到检查器中查看组件详细情况"
+
+[connection signal="pressed" from="TabContainer/Host/VBoxContainer/HBoxContainer/ButtonCreate" to="." method="_on_button_create_pressed"]

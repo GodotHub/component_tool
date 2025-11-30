@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://dxrg0ucmdgiud"]
+
+[ext_resource type="Script" uid="uid://dxm3xri646ln4" path="res://addons/component_tool/ui/comp_item.gd" id="1_ugbj0"]
+
+[node name="CompItem" type="HBoxContainer"]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -12.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ugbj0")
+
+[node name="CompEnable" type="CheckButton" parent="."]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[connection signal="toggled" from="CompEnable" to="." method="_on_comp_enable_toggled"]

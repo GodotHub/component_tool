@@ -3,7 +3,7 @@ extends Node
 class_name ComponentUtil
 
 static var DefaultGenScriptDir: String = "res://addons/component_tool/custom_component"
-static var TemplateComponentFile: String = "res://addons/component_tool/template/compent_template.txt"
+static var TemplateComponentFile: String = "res://addons/component_tool/template/component_template.txt"
 
 # 此函数用于获取一个对象所有继承的类 + 自身的类 包含 class_name
 static func get_object_all_types(obj: Object) -> Array[String]:
@@ -30,7 +30,7 @@ static func get_object_all_types(obj: Object) -> Array[String]:
 
 # 获取当前选中的节点 仅返回一个
 static func get_current_selected_node() -> Node:
-	var selected_nodes: Array[Node] =  EditorInterface.get_selection().get_top_selected_nodes()
+	var selected_nodes: Array[Node] = EditorInterface.get_selection().get_top_selected_nodes()
 	if selected_nodes.size() > 0:
 		return selected_nodes[0]
 	else:
@@ -65,7 +65,7 @@ static func find_comp(node: Node, comp_name: String) -> Component:
 
 # 列出该节点的所有组件
 static func find_all_comp(node: Node) -> Array[Component]:
-	var ret: Array[Component]  = []
+	var ret: Array[Component] = []
 	if not node:
 		return []
 		
@@ -84,7 +84,7 @@ static func set_node_comp_enable(node: Node, comp_name: String, enable: bool) ->
 	if comp.comp_enable != enable:
 		comp.comp_enable = enable
 		return true
-	return false	
+	return false
 		
 
 # 指定一个节点 如果其上有挂载脚本 返回脚本所在文件夹		
@@ -103,8 +103,8 @@ static func get_node_script_path(node: Node) -> String:
 static func get_template(component_name: String, host_type: String) -> String:
 	var comp_template_file: FileAccess = FileAccess.open(TemplateComponentFile, FileAccess.READ)
 	var template_content: String = comp_template_file.get_as_text()
-	template_content = template_content.replace("<ComponentName>", component_name.to_pascal_case())\
-							.replace("<HostName>", host_type.to_snake_case())\
+	template_content = template_content.replace("<ComponentName>", component_name.to_pascal_case()) \
+							.replace("<HostName>", host_type.to_snake_case()) \
 							.replace("<HostType>", host_type)
 							
 	return template_content
@@ -113,7 +113,7 @@ static func get_template(component_name: String, host_type: String) -> String:
 # component_name 	组件名称，应为大驼峰风格
 # host_type 		宿主类型，应为大驼峰风格
 # script_dir 		生成位置
-static func get_component_file_name(component_name: String, host_type: String, 
+static func get_component_file_name(component_name: String, host_type: String,
 									script_dir: String = DefaultGenScriptDir) -> String:
 	var name: String = host_type + component_name + "Component"
 	var snake_name: String = name.to_snake_case()
@@ -126,7 +126,7 @@ static func get_component_file_name(component_name: String, host_type: String,
 static func create_file_in_res(file_full_path: String, content: String) -> bool:
 	var file_access := FileAccess.open(file_full_path, FileAccess.WRITE)
 	if not file_access:
-		push_error("无法创建文件{0}， 错误： {1}".format([file_full_path, FileAccess.get_open_error()]))	
+		push_error("无法创建文件{0}， 错误： {1}".format([file_full_path, FileAccess.get_open_error()]))
 		return false
 	var ret: bool = file_access.store_string(content)
 	if not ret:

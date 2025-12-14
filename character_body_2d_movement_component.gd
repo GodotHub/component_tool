@@ -21,6 +21,6 @@ func _physics_process(delta: float) -> void:
 	if not comp_enable:
 		return
 		
-	var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")	
+	var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	character_body_2d.velocity = input_dir * speed
 	character_body_2d.move_and_slide()

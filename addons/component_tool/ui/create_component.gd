@@ -4,7 +4,7 @@ extends Window
 @onready var types_option_button: OptionButton = %TypesOptionButton
 @onready var location_option_button: OptionButton = %LocationOptionButton
 @onready var code_edit: CodeEdit = %CodeEdit
-@onready var componet_func_name: LineEdit = %ComponetFuncName
+@onready var component_func_name: LineEdit = %ComponentFuncName
 @onready var line_edit_file: LineEdit = %LineEditFile
 @onready var file_dialog: FileDialog = $FileDialog
 
@@ -45,13 +45,13 @@ func update_ui():
 	if location_dict[location_option_button.get_selected()] == "用户位置":
 		script_dir = ComponentUtil.get_node_script_path(ComponentUtil.get_current_selected_node())
 	
-	code_edit.text =  ComponentUtil.get_template(componet_func_name.text, get_current_host_type())
+	code_edit.text =  ComponentUtil.get_template(component_func_name.text, get_current_host_type())
 	
-	var path: String = ComponentUtil.get_component_file_name(componet_func_name.text, get_current_host_type(), script_dir)
+	var path: String = ComponentUtil.get_component_file_name(component_func_name.text, get_current_host_type(), script_dir)
 	line_edit_file.text = path
 	pass
 
-func _on_componet_func_name_text_changed(new_text: String) -> void:
+func _on_component_func_name_text_changed(new_text: String) -> void:
 	update_ui()
 	
 func _on_types_option_button_item_selected(index: int) -> void:

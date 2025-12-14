@@ -35,7 +35,7 @@ custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 text = "组件名"
 
-[node name="ComponetFuncName" type="LineEdit" parent="VBoxContainer/HBoxContainer1"]
+[node name="ComponentFuncName" type="LineEdit" parent="VBoxContainer/HBoxContainer1"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -110,7 +110,7 @@ title = "Open a Directory"
 file_mode = 2
 root_subfolder = "res://"
 
-[connection signal="text_changed" from="VBoxContainer/HBoxContainer1/ComponetFuncName" to="." method="_on_componet_func_name_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer1/ComponentFuncName" to="." method="_on_component_func_name_text_changed"]
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer/TypesOptionButton" to="." method="_on_types_option_button_item_selected"]
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer2/LocationOptionButton" to="." method="_on_location_option_button_item_selected"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer3/ButtonOpenDir" to="." method="_on_button_open_dir_pressed"]

@@ -1,18 +1,47 @@
+"""组件模板文件
+用于生成新组件的基础模板
+变量说明：
+- <HostType>：宿主节点的类型名称
+- <ComponentName>：组件功能名称
+- <HostName>：宿主节点的实例变量名（小写开头驼峰式）
+"""
 class_name <HostType><ComponentName>Component
 extends Component
-# 宿主
+
+# 宿主节点引用
+# 用于在组件内部访问宿主节点的属性和方法
 var <HostName>: <HostType>
 
+"""组件启用时调用
+在此方法中实现组件的初始化逻辑
+"""
 func _enable():
-	# 获得类型提示
+	# 获取宿主节点的类型提示
 	<HostName> = component_host
+	# 设置组件名称
 	component_name = "<HostType><ComponentName>Component"
+	# 在这里添加组件启用时的初始化代码
 	pass
 
+"""组件禁用时调用
+在此方法中实现组件的清理逻辑
+"""
 func _disable():
+	# 在这里添加组件禁用时的清理代码
 	pass
 
+"""物理帧更新时调用
+在此方法中实现组件的主要逻辑
+
+参数：
+- delta：两帧之间的时间间隔，单位为秒
+"""
 func _physics_process(delta: float) -> void:
-	# 记得检查组件激活状态
+	# 记得检查组件是否激活
 	if not comp_enable:
 		return
+	# 在这里添加组件的主要逻辑代码
+	# 例如：
+	# <HostName>.position += Vector2(100, 0) * delta
+	# <HostName>.rotate(0.1 * delta)
+	pass

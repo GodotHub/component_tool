@@ -22,9 +22,10 @@ ComponentTool是一款Godot引擎的插件，用于将代码组件化，将它�
 
 1. 在编辑器中选择一个节点
 2. 点击组件工具面板中的"创建组件"按钮
-3. 选择宿主类型和组件位置
-4. 输入组件名称和代码
-5. 点击"创建"按钮生成组件文件
+3. 选择宿主类型和组件位置，下方地址栏根据用户选择的目录位置更新最终生成位置
+4. 输入组件名称和代码，下方将自动生成代码预览
+5. 点击"创建"按钮生成组件文件，组件将为你保存组件脚本文件，创建子节点并挂载脚本
+6. 完善脚本逻辑
 
 ### 管理组件
 
@@ -32,7 +33,7 @@ ComponentTool是一款Godot引擎的插件，用于将代码组件化，将它�
 2. 组件工具面板会显示该节点的所有组件
 3. 使用复选框启用或禁用组件
 
-### 使用组件
+### 完善组件逻辑
 
 创建的组件会自动继承自`Component`基类，包含以下功能：
 
@@ -42,43 +43,38 @@ ComponentTool是一款Godot引擎的插件，用于将代码组件化，将它�
 
 组件类需要实现以下方法：
 
-- `_enable()`: 组件启用时调用
+- `_enable()`: 组件启用时调用，已经在模板中默认实现
 - `_disable()`: 组件禁用时调用
 
 ## 示例
 
-以下是一个简单的移动组件示例：
+以下是一个简单的移动组件示例，大部分代码已经自动生成，你需要完成最关键的组件功能逻辑。
+可以注意到 character_body_2d 标明了宿主类型，这样可以可以获得更好的类型提示。
 
 ```gdscript
 class_name CharacterBody2DMovementComponent
 extends Component
-
+# 获得更好的类型提示而不必手动转换类型
 var character_body_2d: CharacterBody2D
+# 暴露组件属性供外部调整
+@export var speed: float = 1000
 
 func _enable():
-    character_body_2d = component_host
-    component_name = "CharacterBody2DMovementComponent"
-    
+	character_body_2d = component_host
+	component_name = "CharacterBody2DMovementComponent"
+	pass
+
 func _disable():
-    pass
+	pass
 
 func _physics_process(delta: float) -> void:
-    if not comp_enable:
-        return
-    
-    var direction = Vector2.ZERO
-    if Input.is_action_pressed("ui_right"):
-        direction.x += 1
-    if Input.is_action_pressed("ui_left"):
-        direction.x -= 1
-    if Input.is_action_pressed("ui_down"):
-        direction.y += 1
-    if Input.is_action_pressed("ui_up"):
-        direction.y -= 1
-    
-    direction = direction.normalized() * 200.0
-    character_body_2d.velocity = direction
-    character_body_2d.move_and_slide()
+	if not comp_enable:
+		return
+	# 组件具体逻辑
+	var input_dir: Vector2 = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	character_body_2d.velocity = input_dir * speed
+	character_body_2d.move_and_slide()
+
 ```
 
 ## 项目结构
@@ -93,18 +89,13 @@ addons/component_tool/
 ├── template/             # 模板文件
 │   └── component_template.txt  # 组件模板
 └── ui/                   # UI界面
-    ├── comp_center.gd    # 主界面控制器
-    ├── comp_item.gd      # 组件项控制器
-    └── create_component.gd  # 创建组件界面控制器
+	├── comp_center.gd    # 主界面控制器
+	├── comp_item.gd      # 组件项控制器
+	└── create_component.gd  # 创建组件界面控制器
 ```
 
-## 注意事项
-
-1. 组件可以放在插件目录中或者项目自定义目录下
-2. 确保组件类名遵循`<HostType><ComponentName>Component`的命名规范
-3. 在组件的`_enable()`方法中获取宿主节点引用
-4. 在组件的更新方法中检查`comp_enable`状态
-
+## 未来计划
+我计划在创建组建时可以选择模板，这样户可以添加自己的模板文件，使其更加适用于各种不同的项目。
 
 
 ## 开发者

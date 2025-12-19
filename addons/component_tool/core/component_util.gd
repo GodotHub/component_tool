@@ -164,18 +164,19 @@ static func get_node_script_path(node: Node) -> String:
 		
 	return "res://"
 		
-	
-"""获取组件模板文件替换后的内容
+		
+"""获取组件模板文件替换后的内容(版本2)
 
 参数:
 - component_name: 组件名称
 - host_type: 宿主类型名称
+- template_file_path: 模板文件路径
 
 返回值:
 - String: 替换后的模板内容
 """
-static func get_template(component_name: String, host_type: String) -> String:
-	var comp_template_file: FileAccess = FileAccess.open(TemplateComponentFile, FileAccess.READ)
+static func get_template(component_name: String, host_type: String, template_file_path: String) -> String:
+	var comp_template_file: FileAccess = FileAccess.open(template_file_path, FileAccess.READ)
 	var template_content: String = comp_template_file.get_as_text()
 	# 替换模板中的占位符
 	template_content = template_content.replace("<ComponentName>", component_name.to_pascal_case()) \
@@ -183,6 +184,39 @@ static func get_template(component_name: String, host_type: String) -> String:
 							.replace("<HostType>", host_type)
 							
 	return template_content
+
+"""获取目录下所有txt文件的完整路径
+
+参数:
+- dir_path: 目录路径
+
+返回值:
+- Array[String]: 包含所有txt文件完整路径的数组
+"""
+static func get_files_in_dir(dir_path: String) -> Array[String]:
+	var files: Array[String] = []
+	var dir_access: DirAccess = DirAccess.open(dir_path)
+	if not dir_access:
+		push_error("无法打开目录{0}，错误：{1}".format([dir_path, DirAccess.get_open_error()]))
+		return files
+		
+	dir_access.list_dir_begin()
+	var file_name: String = dir_access.get_next()
+	while file_name != "":
+		if file_name.begins_with("."):
+			file_name = dir_access.get_next()
+			continue
+		
+		var full_path: String = dir_path + file_name
+		if dir_access.current_is_dir():
+			files.append_array(get_files_in_dir(full_path))
+		else:
+			if file_name.ends_with(".txt"):
+				files.append(full_path)
+				
+		file_name = dir_access.get_next()
+	dir_access.list_dir_end()
+	return files
 
 """获取组件文件的完整路径名
 

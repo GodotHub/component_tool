@@ -23,6 +23,11 @@ extends Window
 """
 @onready var file_dialog: FileDialog = $FileDialog
 
+"""模板选择按钮
+"""
+@onready var templates_option_button: OptionButton = %TemplatesOptionButton
+
+
 """宿主类型字典
 键为索引，值为类型名称
 """
@@ -31,6 +36,8 @@ var host_dict: Dictionary[int, String] = {}
 键为索引，值为位置名称
 """
 var location_dict: Dictionary[int, String] = {}
+
+var current_template_file: String = ComponentUtil.TemplateComponentFile
 
 """创建完成信号
 组件创建成功后发出
@@ -46,6 +53,18 @@ func _ready() -> void:
 		var text: String = location_option_button.get_item_text(i)
 		location_dict[i] = text
 
+	## 在 res://addons/component_tool/template/ 中遍历所有模板文件添加到 templates_option_button 中
+	var template_dir: String = "res://addons/component_tool/template/"
+	var template_files: Array[String] = ComponentUtil.get_files_in_dir(template_dir)
+	var index = 0
+	for template_file in template_files:
+		templates_option_button.add_item(template_file, index)
+		if template_file == current_template_file:
+			templates_option_button.select(index)
+		index += 1
+		pass
+	
+	
 """设置宿主类型选项
 
 参数:
@@ -86,7 +105,7 @@ func update_ui():
 		script_dir = ComponentUtil.get_node_script_path(ComponentUtil.get_current_selected_node())
 	
 	# 更新代码预览
-	code_edit.text = ComponentUtil.get_template(component_func_name.text, get_current_host_type())
+	code_edit.text = ComponentUtil.get_template(component_func_name.text, get_current_host_type(), current_template_file)
 	
 	# 更新文件路径
 	var path: String = ComponentUtil.get_component_file_name(component_func_name.text, get_current_host_type(), script_dir)
@@ -103,6 +122,10 @@ func _on_component_func_name_text_changed(new_text: String) -> void:
 更新界面
 """
 func _on_types_option_button_item_selected(index: int) -> void:
+	update_ui()
+
+func _on_templates_option_button_item_selected(index: int) -> void:
+	current_template_file = templates_option_button.get_item_text(index)
 	update_ui()
 
 """浏览按钮按下时调用
